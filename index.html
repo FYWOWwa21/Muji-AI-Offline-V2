@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f3a0c7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Muji">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+<title>Muji • เพื่อนคุยของฉัน</title>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="topbar">
+    <button class="circle back" id="back">‹</button>
+    <div class="profile">
+      <div class="avatar"><img src="assets/muji.png" alt="มูจิ"></div>
+      <div>
+        <div class="name">น้องมูจิ <span>💗</span></div>
+        <div class="sub">เพื่อนคุยของคุณ <i id="dot"></i></div>
+        <div class="progress"><b>♥ Lv.<span id="level">1</span></b><span><i id="xp"></i></span></div>
+      </div>
+    </div>
+    <button class="circle" id="settings">⚙</button>
+    <button class="circle close" id="clear">×</button>
+  </header>
+
+  <main class="room">
+    <div class="sky"><div class="stars">✦　·　✧　·　✦</div><div class="moon">☾</div><div class="city one"></div><div class="city two"></div><div class="city three"></div></div>
+    <div class="wall"></div>
+    <div class="plant">🌿</div>
+    <div class="poster a">🌈</div><div class="poster b">♡</div>
+    <div class="toy">🧸</div>
+    <div class="chat" id="chat"></div>
+
+    <div class="mood-row" id="moods">
+      <button data-m="happy">😊</button><button data-m="love">🥰</button><button data-m="sad">🥺</button><button data-m="angry">😤</button><button data-m="sleep">😴</button>
+    </div>
+
+    <div class="character-area">
+      <div class="sparkles">✦　♡　✦</div>
+      <img class="character" id="character" src="assets/muji.png" alt="มูจิ">
+      <div class="callout">มาคุยกัน<br>นะ~ 💗</div>
+      <div class="emotion" id="emotion">😊</div>
+    </div>
+
+    <div class="listen-status">
+      <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <span id="status">มูจิอยู่ตรงนี้แล้ว...</span>
+      <img src="assets/muji.png" alt="">
+      <b>♥</b>
+    </div>
+  </main>
+
+  <div class="composer">
+    <input id="input" placeholder="พิมพ์คุยกับมูจิ..." autocomplete="off">
+    <button id="send">➤</button>
+  </div>
+
+  <nav class="bottom">
+    <button id="memory"><span>♡</span><small>ความจำ</small></button>
+    <button id="voiceToggle"><span>🔊</span><small>เสียง</small></button>
+    <button id="mic" class="mic">🎙</button>
+    <button id="photo"><span>▧</span><small>รูป</small></button>
+    <button id="features"><span>✦</span><small>มูจิ</small></button>
+  </nav>
+
+  <div class="modal hidden" id="modal">
+    <div class="card">
+      <div class="head">มูจิของคุณ <button id="close">×</button></div>
+      <label>ชื่อที่มูจิใช้เรียกคุณ<input id="nickname"></label>
+      <label class="row">มูจิพูดออกเสียง <input type="checkbox" id="speech"></label>
+      <label class="row">มูจิขี้เล่นเป็นพิเศษ <input type="checkbox" id="cute"></label>
+      <label class="row">เริ่มบทสนทนาเอง <input type="checkbox" id="proactive"></label>
+      <button class="save" id="save">บันทึก</button>
+      <p>เวอร์ชันนี้ไม่มี API และไม่ส่งข้อความของคุณไปที่เซิร์ฟเวอร์ การคุยและความจำเก็บในเครื่องนี้</p>
+    </div>
+  </div>
+  <input type="file" id="file" accept="image/*" hidden>
+</div>
+<script src="app.js"></script>
+<script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));</script>
+</body>
+</html>
