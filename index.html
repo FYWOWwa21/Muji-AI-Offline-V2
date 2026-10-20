@@ -16,14 +16,15 @@
   <header class="topbar">
     <button class="circle back" id="back">‹</button>
     <div class="profile">
-      <div class="avatar"><img src="assets/muji.png" alt="มูจิ"></div>
+      <div class="avatar"><img src="muji.png" alt="มูจิ"></div>
       <div>
         <div class="name">น้องมูจิ <span>💗</span></div>
         <div class="sub">เพื่อนคุยของคุณ <i id="dot"></i></div>
         <div class="progress"><b>♥ Lv.<span id="level">1</span></b><span><i id="xp"></i></span></div>
       </div>
     </div>
-    <button class="circle" id="settings">⚙</button>
+    <button class="circle" id="music" aria-label="เพลง">♫</button>
+    <button class="circle" id="settings" aria-label="ตั้งค่า">⚙</button>
     <button class="circle close" id="clear">×</button>
   </header>
 
@@ -36,12 +37,12 @@
     <div class="chat" id="chat"></div>
 
     <div class="mood-row" id="moods">
-      <button data-m="happy">😊</button><button data-m="love">🥰</button><button data-m="sad">🥺</button><button data-m="angry">😤</button><button data-m="sleep">😴</button>
+      <button data-m="happy" aria-label="ยิ้ม">😊<small>ยิ้ม</small></button><button data-m="love" aria-label="เขิน">🥰<small>เขิน</small></button><button data-m="sad" aria-label="เศร้า">🥺<small>เศร้า</small></button><button data-m="angry" aria-label="หงุดหงิด">😤<small>หงุดหงิด</small></button><button data-m="sleep" aria-label="ง่วง">😴<small>ง่วง</small></button>
     </div>
 
     <div class="character-area">
       <div class="sparkles">✦　♡　✦</div>
-      <img class="character" id="character" src="assets/muji.png" alt="มูจิ">
+      <img class="character" id="character" src="muji.png" alt="มูจิ">
       <div class="callout">มาคุยกัน<br>นะ~ 💗</div>
       <div class="emotion" id="emotion">😊</div>
     </div>
@@ -49,7 +50,7 @@
     <div class="listen-status">
       <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <span id="status">มูจิอยู่ตรงนี้แล้ว...</span>
-      <img src="assets/muji.png" alt="">
+      <img src="muji.png" alt="">
       <b>♥</b>
     </div>
   </main>
