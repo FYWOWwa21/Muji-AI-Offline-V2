@@ -49,3 +49,53 @@
  .composer button{width:44px;height:44px;flex-basis:44px}
  .speech-popup{bottom:62%;max-height:26%}
 }
+
+
+/* Final mascot layout: larger, taller, positioned directly above the conversation dock */
+.room{--dock-clearance:8px}
+.character-area{
+  left:-3%;
+  right:-3%;
+  bottom:0;
+  height:74%;
+  overflow:visible;
+  align-items:flex-end;
+  z-index:10;
+}
+.character{
+  width:min(112%,520px);
+  max-width:none;
+  height:100%;
+  object-fit:contain;
+  object-position:center bottom;
+  transform-origin:center bottom;
+}
+.character-area .callout{left:1%;bottom:24%;z-index:12}
+.character-area .emotion{right:7%;bottom:27%;z-index:12}
+.character-area .sparkles{right:12%;top:13%;z-index:11}
+.speech-popup{
+  left:4%;
+  right:11%;
+  bottom:69%;
+  max-height:22%;
+  z-index:29;
+}
+.listen-status,.composer{
+  left:7%;
+  right:7%;
+  bottom:7px;
+  height:64px;
+  z-index:26;
+}
+.mood-row{z-index:23}
+.chat{z-index:24;max-height:35%}
+@media(max-height:760px){
+  .character-area{height:70%}
+  .character{width:min(108%,480px)}
+  .speech-popup{bottom:66%;max-height:23%}
+  .listen-status,.composer{height:58px}
+}
+@media(min-width:600px){
+  .character-area{height:73%}
+  .character{width:min(112%,520px)}
+}
