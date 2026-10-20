@@ -66,6 +66,7 @@ $("settings").onclick=()=>{$("nickname").value=S.n;$("speech").checked=S.speech;
 $("close").onclick=()=>$("modal").classList.add("hidden");
 $("save").onclick=()=>{S.n=$("nickname").value.trim()||"คนเก่ง";S.speech=$("speech").checked;S.cute=$("cute").checked;S.proactive=$("proactive").checked;save();$("modal").classList.add("hidden");toast("มูจิจำการตั้งค่าแล้ว 💗")};
 $("back").onclick=()=>toast("มูจิอยู่หน้าหลักแล้วนะ");
+$("music").onclick=()=>{S.muted=false;S.speech=true;$("voiceToggle span").textContent="🔊";say("สวัสดีจ้า มูจิอยู่ตรงนี้แล้วนะ");toast("เปิดเสียงมูจิแล้ว ♫")};
 document.querySelectorAll("#moods button").forEach(b=>b.onclick=()=>{let m=b.dataset.m;let x={happy:["😊","มูจิยิ้มให้แล้วนะ~ วันนี้เราคุยกันสนุกๆ กันเถอะ"],love:["🥰","อ๊ะ... อย่าทำให้มูจิเขินสิ 💗"],sad:["🥺","มานี่มา มูจิอยู่ข้างๆ นะ"],angry:["😤","ฮึ่ม! เล่าให้มูจิฟังสิ ใครทำให้หงุดหงิด"],sleep:["😴","ง่วงแล้วเหรอ พักกับมูจิก่อนก็ได้นะ"]}[m];mood(x[0]);bubble(x[1]);say(x[1])});
 S.history.slice(-12).forEach(m=>bubble(m.text,m.who,false));save();
 if(!S.history.length){setTimeout(()=>{let t=`สวัสดี ${S.n} 💗 มูจิเป็นเพื่อนคุยของเธอนะ วันนี้อยากคุยเรื่องอะไรกับมูจิ?`;bubble(t);say(t)},500)}
