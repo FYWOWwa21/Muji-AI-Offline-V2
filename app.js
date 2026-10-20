@@ -11,8 +11,24 @@ function save(){for(const [k,v] of [["n",S.n],["s",S.speech?"1":"0"],["c",S.cute
 function toast(t){let e=document.createElement("div");e.className="toast";e.textContent=t;$(".app").append(e);setTimeout(()=>e.remove(),2500)}
 function mood(e){$("emotion").textContent=e}
 function addXP(v){S.xp+=v;if(S.xp>=100){S.xp-=100;S.level++;toast("มูจิเลเวลอัปแล้ว! ✨")}save()}
-function bubble(text,who="muji",store=true){let e=document.createElement("div");e.className="bubble "+(who==="user"?"me":"muji");e.append(document.createTextNode(text));let t=document.createElement("span");t.className="time";t.textContent=new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});e.append(t);$("chat").append(e);$("chat").scrollTop=$("chat").scrollHeight;if(store){S.history.push({text,who});save()}}
-function say(text){if(S.muted||!S.speech||!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text.replace(/[\u{1F300}-\u{1FAFF}]/gu,""));u.lang="th-TH";u.rate=.93;u.pitch=1.35;$("character").classList.add("talk");u.onend=()=>{$("character").classList.remove("talk")};u.onerror=()=>{$("character").classList.remove("talk")};speechSynthesis.speak(u)}
+let popupTimer=null;
+function showSpeechPopup(text){
+ const p=$("speechPopup");if(!p)return;
+ clearTimeout(popupTimer);p.textContent=text;p.classList.remove("hidden");
+ const ms=Math.max(2600,Math.min(9000,text.length*95));
+ popupTimer=setTimeout(()=>p.classList.add("hidden"),ms);
+}
+function hideSpeechPopup(){clearTimeout(popupTimer);$("speechPopup")?.classList.add("hidden")}
+function bubble(text,who="muji",store=true){
+ if(who!=="user"){
+   if(store){S.history.push({text,who});save()}
+   showSpeechPopup(text);return;
+ }
+ let e=document.createElement("div");e.className="bubble me";e.append(document.createTextNode(text));
+ let t=document.createElement("span");t.className="time";t.textContent=new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});e.append(t);
+ $("chat").append(e);$("chat").scrollTop=$("chat").scrollHeight;if(store){S.history.push({text,who});save()}
+}
+function say(text){if(S.muted||!S.speech||!("speechSynthesis"in window)){const p=$("speechPopup");if(p&&!p.classList.contains("hidden")){clearTimeout(popupTimer);popupTimer=setTimeout(()=>p.classList.add("hidden"),Math.max(2500,Math.min(7000,text.length*75)))}return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text.replace(/[\u{1F300}-\u{1FAFF}]/gu,""));u.lang="th-TH";u.rate=.93;u.pitch=1.35;$("character").classList.add("talk");u.onend=()=>{$("character").classList.remove("talk");hideSpeechPopup()};u.onerror=()=>{$("character").classList.remove("talk");hideSpeechPopup()};speechSynthesis.speak(u)}
 function remember(text){
   let m=text.match(/(?:ฉันชื่อ|เราชื่อ|ชื่อของฉันคือ|เรียกฉันว่า)\s*([^\s,.!?]+)/i);
   if(m)S.n=m[1];
@@ -47,7 +63,7 @@ function reply(t){
  mood("😊");return starters[Math.floor(Math.random()*starters.length)];
 }
 function send(){
- let t=$("input").value.trim();if(!t)return;$("input").value="";bubble(t,"user");addXP(4);remember(t);lastUserTime=Date.now();
+ let t=$("input").value.trim();if(!t)return;$("input").value="";bubble(t,"user");$("composer").classList.add("hidden");$("listen-status").classList.remove("hidden");addXP(4);remember(t);lastUserTime=Date.now();
  $("status").textContent="มูจิกำลังคิด...";setTimeout(()=>{let r=reply(t);bubble(r);say(r);$("status").textContent="มูจิพร้อมฟังคุณแล้ว...";save()},320+Math.random()*500);
 }
 function voice(){
@@ -56,9 +72,9 @@ function voice(){
  if(listening)return;recognition=new SR();recognition.lang="th-TH";recognition.interimResults=false;recognition.continuous=false;listening=true;$("mic").classList.add("listening");$("status").textContent="มูจิกำลังฟังอยู่นะ...";
  recognition.onresult=e=>{$("input").value=e.results[0][0].transcript;send()};recognition.onerror=()=>toast("มูจิไม่ได้ยิน ลองพูดอีกครั้งนะ");recognition.onend=()=>{listening=false;$("mic").classList.remove("listening");$("status").textContent="มูจิพร้อมฟังคุณแล้ว..."};recognition.start();
 }
-$("send").onclick=send;$("input").addEventListener("keydown",e=>{if(e.key==="Enter")send()});$("mic").onclick=voice;
+$("send").onclick=send;$("input").addEventListener("keydown",e=>{if(e.key==="Enter")send()});$("mic").onclick=()=>{ $("composer").classList.add("hidden");$("listen-status").classList.remove("hidden");voice() };\n$("keyboard").onclick=()=>{const open=$("composer").classList.contains("hidden");$("composer").classList.toggle("hidden",!open);$("listen-status").classList.toggle("hidden",open);if(open)setTimeout(()=>$("input").focus(),80)};
 $("voiceToggle").onclick=()=>{S.muted=!S.muted;$("voiceToggle span").textContent=S.muted?"🔇":"🔊";toast(S.muted?"มูจิปิดเสียงแล้ว":"มูจิเปิดเสียงแล้ว")};
-$("clear").onclick=()=>{S.history=[];save();$("chat").innerHTML="";bubble(`เริ่มห้องใหม่แล้วนะ ${S.n} 💗 คุยกับมูจิได้เลย`)};
+$("clear").onclick=()=>{S.history=[];save();$("chat").innerHTML="";hideSpeechPopup();bubble(`เริ่มห้องใหม่แล้วนะ ${S.n} 💗 คุยกับมูจิได้เลย`);say(`เริ่มห้องใหม่แล้วนะ ${S.n} คุยกับมูจิได้เลย`)};
 $("memory").onclick=()=>{let keys=Object.keys(S.facts);toast(keys.length?`มูจิจำได้ว่า: ${keys.map(k=>S.facts[k]).join(", ")}`:`ตอนนี้มูจิจำแค่บทสนทนาที่อยู่ในเครื่องนี้ 💗`)};
 $("features").onclick=()=>toast("มูจิ V2: คุย • เสียง • ความจำ • อารมณ์ • ออฟไลน์ 100%");
 $("photo").onclick=()=>{$("file").click()};$("file").onchange=e=>{if(e.target.files[0])toast("มูจิได้รับรูปแล้ว 💗 รูปไม่ถูกอัปโหลดไปที่ไหน")};
@@ -68,6 +84,6 @@ $("save").onclick=()=>{S.n=$("nickname").value.trim()||"คนเก่ง";S.sp
 $("back").onclick=()=>toast("มูจิอยู่หน้าหลักแล้วนะ");
 $("music").onclick=()=>{S.muted=false;S.speech=true;$("voiceToggle span").textContent="🔊";say("สวัสดีจ้า มูจิอยู่ตรงนี้แล้วนะ");toast("เปิดเสียงมูจิแล้ว ♫")};
 document.querySelectorAll("#moods button").forEach(b=>b.onclick=()=>{let m=b.dataset.m;let x={happy:["😊","มูจิยิ้มให้แล้วนะ~ วันนี้เราคุยกันสนุกๆ กันเถอะ"],love:["🥰","อ๊ะ... อย่าทำให้มูจิเขินสิ 💗"],sad:["🥺","มานี่มา มูจิอยู่ข้างๆ นะ"],angry:["😤","ฮึ่ม! เล่าให้มูจิฟังสิ ใครทำให้หงุดหงิด"],sleep:["😴","ง่วงแล้วเหรอ พักกับมูจิก่อนก็ได้นะ"]}[m];mood(x[0]);bubble(x[1]);say(x[1])});
-S.history.slice(-12).forEach(m=>bubble(m.text,m.who,false));save();
+S.history.slice(-12).filter(m=>m.who==="user").forEach(m=>bubble(m.text,m.who,false));save();
 if(!S.history.length){setTimeout(()=>{let t=`สวัสดี ${S.n} 💗 มูจิเป็นเพื่อนคุยของเธอนะ วันนี้อยากคุยเรื่องอะไรกับมูจิ?`;bubble(t);say(t)},500)}
 if(S.proactive)setInterval(()=>{if(Date.now()-lastUserTime>15*60*1000&&document.visibilityState==="visible"){let t=`เงียบไปนิดนึงแล้วนะ ${S.n} 💗 วันนี้โอเคไหม? มูจิอยู่ตรงนี้นะ`;bubble(t);say(t);lastUserTime=Date.now()}},60000);
