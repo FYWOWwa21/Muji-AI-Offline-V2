@@ -17,7 +17,7 @@
 .composer{border:1px solid #f7d9e6}
 .bubble.muji{background:#fffdf8}
 .bubble.me{background:linear-gradient(135deg,#f7b1d0,#f39bc2);color:#593b4b}
-@media(max-height:760px){.chat{max-height:36%;top:96px}.character-area{height:51%}.mood-row{top:140px}.composer{bottom:130px}.listen-status{height:58px}.listen-status img{height:43px;width:43px}}
+@media(max-height:760px){.chat{max-height:36%;top:96px}.character-area{height:51%}.mood-row{top:140px}.composer{bottom:170px}.listen-status{height:58px}.listen-status img{height:43px;width:43px}}
 
 /* Toggleable text composer and temporary character speech bubble */
 .composer{bottom:145px;transition:opacity .18s,transform .18s}
