@@ -18,3 +18,14 @@
 .bubble.muji{background:#fffdf8}
 .bubble.me{background:linear-gradient(135deg,#f7b1d0,#f39bc2);color:#593b4b}
 @media(max-height:760px){.chat{max-height:36%;top:96px}.character-area{height:51%}.mood-row{top:140px}.composer{bottom:130px}.listen-status{height:58px}.listen-status img{height:43px;width:43px}}
+
+/* Toggleable text composer and temporary character speech bubble */
+.composer{bottom:145px;transition:opacity .18s,transform .18s}
+.composer.hidden{display:none}
+.listen-status{transition:opacity .18s,transform .18s}
+.listen-status.hidden{display:none}
+.speech-popup{position:absolute;z-index:28;left:2%;right:12%;bottom:56%;max-height:26%;overflow:auto;padding:13px 16px;border:2px solid #fff;background:#fffdf8f5;color:#5b4052;border-radius:22px 22px 22px 7px;box-shadow:0 8px 25px #76556830;font-size:clamp(13px,3.7vw,17px);line-height:1.42;white-space:pre-wrap;overflow-wrap:anywhere;animation:pop .22s ease-out}
+.speech-popup:after{content:"";position:absolute;left:24px;bottom:-9px;width:15px;height:15px;background:#fffdf8;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(45deg)}
+.speech-popup.hidden{display:none}
+.bottom #keyboard span{font-size:24px}
+@media(max-height:760px){.speech-popup{bottom:53%;max-height:28%}}
