@@ -72,11 +72,12 @@ function voice(){
  if(listening)return;recognition=new SR();recognition.lang="th-TH";recognition.interimResults=false;recognition.continuous=false;listening=true;$("mic").classList.add("listening");$("status").textContent="มูจิกำลังฟังอยู่นะ...";
  recognition.onresult=e=>{$("input").value=e.results[0][0].transcript;send()};recognition.onerror=()=>toast("มูจิไม่ได้ยิน ลองพูดอีกครั้งนะ");recognition.onend=()=>{listening=false;$("mic").classList.remove("listening");$("status").textContent="มูจิพร้อมฟังคุณแล้ว..."};recognition.start();
 }
-$("send").onclick=send;$("input").addEventListener("keydown",e=>{if(e.key==="Enter")send()});$("mic").onclick=()=>{ $("composer").classList.add("hidden");$("listen-status").classList.remove("hidden");voice() };\n$("keyboard").onclick=()=>{const open=$("composer").classList.contains("hidden");$("composer").classList.toggle("hidden",!open);$("listen-status").classList.toggle("hidden",open);if(open)setTimeout(()=>$("input").focus(),80)};
+$("send").onclick=send;$("input").addEventListener("keydown",e=>{if(e.key==="Enter")send()});$("mic").onclick=()=>{ $("composer").classList.add("hidden");$("listen-status").classList.remove("hidden");voice() };
+$("keyboard").onclick=()=>{const open=$("composer").classList.contains("hidden");$("composer").classList.toggle("hidden",!open);$("listen-status").classList.toggle("hidden",open);if(open)setTimeout(()=>$("input").focus(),80)};
 $("voiceToggle").onclick=()=>{S.muted=!S.muted;$("voiceToggle span").textContent=S.muted?"🔇":"🔊";toast(S.muted?"มูจิปิดเสียงแล้ว":"มูจิเปิดเสียงแล้ว")};
 $("clear").onclick=()=>{S.history=[];save();$("chat").innerHTML="";hideSpeechPopup();bubble(`เริ่มห้องใหม่แล้วนะ ${S.n} 💗 คุยกับมูจิได้เลย`);say(`เริ่มห้องใหม่แล้วนะ ${S.n} คุยกับมูจิได้เลย`)};
 $("memory").onclick=()=>{let keys=Object.keys(S.facts);toast(keys.length?`มูจิจำได้ว่า: ${keys.map(k=>S.facts[k]).join(", ")}`:`ตอนนี้มูจิจำแค่บทสนทนาที่อยู่ในเครื่องนี้ 💗`)};
-$("features").onclick=()=>toast("มูจิ V2: คุย • เสียง • ความจำ • อารมณ์ • ออฟไลน์ 100%");
+
 $("photo").onclick=()=>{$("file").click()};$("file").onchange=e=>{if(e.target.files[0])toast("มูจิได้รับรูปแล้ว 💗 รูปไม่ถูกอัปโหลดไปที่ไหน")};
 $("settings").onclick=()=>{$("nickname").value=S.n;$("speech").checked=S.speech;$("cute").checked=S.cute;$("proactive").checked=S.proactive;$("modal").classList.remove("hidden")};
 $("close").onclick=()=>$("modal").classList.add("hidden");
